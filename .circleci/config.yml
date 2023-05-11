@@ -1,15 +1,6 @@
 version: 2.1
 
 jobs:
-  build_tests:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - checkout
-      - run:
-          name: Install npm dependencies
-          command: |
-            npm install --save
   build_docker_image:
     docker:
       - image: circleci/node:12
@@ -21,14 +12,12 @@ jobs:
           name: Build Docker image
           command: |
             docker build -t nodejswebapp1 -t nitishmalang/nodejswebapp1:latest .
-            echo $DOCKER_PASSWORD | docker login -u nitishmalang --password-stdin
-            docker push nitishmalang/nodejswebapp1:latest
 
 workflows:
-  build_test:
+  build:
     jobs:
-      - build_tests
       - build_docker_image:
           filters:
             branches:
               only: develop-circleci
+
